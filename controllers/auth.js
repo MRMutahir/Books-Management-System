@@ -53,14 +53,7 @@ export const login = async (req, res, next) => {
 
     const authToken = await signToken({ userID: user._id });
 
-
-    res.cookie('authToken', authToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-    });
-
-    return sendResponse(res, "Login successful", true, 200);
+    return sendResponse(res, "Login successful", true, 200, authToken);
 
   } catch (error) {
     next(error);

@@ -1,5 +1,5 @@
 import express from "express";
-import { addBook, updateBook, deleteBook, getBooks, getBookById } from "../controllers/books.js";
+import { addBook, updateBook, deleteBook, getBooks, getBookById, AuthBooks } from "../controllers/books.js";
 import { check } from "express-validator";
 import { validate } from "../middlewares/validate.js";
 import { authenticate } from "../middlewares/authenticate.js";
@@ -11,7 +11,7 @@ const validateId = [
 ];
 
 router.post(
-  "/books",
+  "/add",
   authenticate,
   check("title").notEmpty().withMessage("Title is required"),
   check("author").notEmpty().withMessage("Author name is required"),
@@ -25,8 +25,8 @@ router.post(
 router.put(
   "/books/:id",
   authenticate,
-  validateId, 
-  validate,    
+  validateId,
+  validate,
   updateBook
 );
 
@@ -34,19 +34,21 @@ router.put(
 router.delete(
   "/books/:id",
   authenticate,
-  validateId,  
-  validate,   
+  validateId,
+  validate,
   deleteBook
 );
 
 router.get(
   "/books/:id",
-  validateId, 
-  validate,     
+  validateId,
+  validate,
   getBookById
 );
 
 
 router.get("/books", getBooks);
+
+router.get("/auth-books", authenticate, AuthBooks);
 
 export { router as booksRoutes };
