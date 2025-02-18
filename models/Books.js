@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+// const { Users } = await import("../models/Users.js");
 
 const BookSchema = new mongoose.Schema(
   {
@@ -30,7 +31,7 @@ const BookSchema = new mongoose.Schema(
       required: [true, "Published year is required"],
     },
 
-    createdBy: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
       required: true,
