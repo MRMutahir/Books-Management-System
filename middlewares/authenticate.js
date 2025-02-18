@@ -3,7 +3,6 @@ import { sendResponse } from "../helpers/common.js";
 
 const authenticate = async (req, res, next) => {
   const authHeader = req.headers.authorization;
-
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return sendResponse(
       res,
@@ -12,12 +11,14 @@ const authenticate = async (req, res, next) => {
       401
     );
   }
+  const token = authHeader.split(" ")[1]
 
-  const token = authHeader.split(" ")[1];
+  if (!token) {
+    return sendResponse(res, "Authentication token missing", true, 401);
+  }
 
   try {
     const user = await verifyToken(token);
-    // console.log("user", user);
     req.user = user;
     next();
   } catch (error) {

@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 
-const validate = async (req, res, next) => {
+export const validate = async (req, res, next) => {
   const errors = validationResult(req);
   const error = {};
   if (!errors.isEmpty()) {
@@ -12,4 +12,4 @@ const validate = async (req, res, next) => {
 
 
 
-export { validate };
+

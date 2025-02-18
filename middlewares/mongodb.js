@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { envKeys } from "../config/keys.js";
-// import { prettyErrorLog, log2File, prettyLog } from "../helpers/common.js";
 
 export const connectDB = async () => {
     try {
@@ -18,13 +17,3 @@ mongoose.connection.on("connected", () => {
 mongoose.connection.on("error", (err) => {
     console.error("❌ MongoDB Connection Error:", err);
 });
-
-mongoose.connection.on("disconnected", () => {
-    console.warn("⚠️ MongoDB Disconnected. Attempting Reconnection...");
-});
-
-mongoose.connection.on("reconnected", () => {
-    console.log("✅ MongoDB Reconnected Successfully");
-});
-
-

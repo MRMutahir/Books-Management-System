@@ -14,7 +14,7 @@ const routes = async (app) => {
 
 
   app.use("/api/v1/books", async (req, res, next) => {
-    const { booksRoutes } = await import("../books.js");
+    const { booksRoutes } = await import("../routes/books.js");
     booksRoutes(req, res, next);
   });
 
