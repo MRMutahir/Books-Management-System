@@ -8,7 +8,13 @@ import { errorHandler } from "./middlewares/errorMiddleware.js";
 const app = express();
 const PORT = envKeys.port;
 
-app.use(cors());
+app.use(
+    cors({
+      origin: "http://localhost:3000", 
+      methods: ["GET", "POST", "PUT", "DELETE"], 
+      credentials: true, 
+    })
+  );
 app.use(express.json());
 
 routes(app);

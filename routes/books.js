@@ -1,5 +1,5 @@
 import express from "express";
-import { addBook, updateBook, deleteBook, getBooks, getBookById } from "../controllers/books.js";
+import { addBook, updateBook, deleteBook, getBooks, getBookById, AuthBooks } from "../controllers/books.js";
 import { check } from "express-validator";
 import { validate } from "../middlewares/validate.js";
 import { authenticate } from "../middlewares/authenticate.js";
@@ -10,8 +10,12 @@ const validateId = [
   check('id').isMongoId().withMessage('Invalid ID format')
 ];
 
+router.get("/list", getBooks);
+
+router.get("/auth-books", authenticate, AuthBooks);
+
 router.post(
-  "/books",
+  "/add",
   authenticate,
   check("title").notEmpty().withMessage("Title is required"),
   check("author").notEmpty().withMessage("Author name is required"),
@@ -23,30 +27,29 @@ router.post(
 );
 
 router.put(
-  "/books/:id",
+  "/:id",
   authenticate,
-  validateId, 
-  validate,    
+  validateId,
+  validate,
   updateBook
 );
 
 
 router.delete(
-  "/books/:id",
+  "/:id",
   authenticate,
-  validateId,  
-  validate,   
+  validateId,
+  validate,
   deleteBook
 );
 
 router.get(
-  "/books/:id",
-  validateId, 
-  validate,     
+  "/:id",
+  validateId,
+  validate,
   getBookById
 );
 
 
-router.get("/books", getBooks);
 
 export { router as booksRoutes };

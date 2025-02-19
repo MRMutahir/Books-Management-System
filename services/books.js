@@ -21,9 +21,7 @@ export const updateBookService = async (id, updateData) => {
 
 export const deleteBookService = async (id) => {
   try {
-
     return await Book.findByIdAndDelete(id);
-
   } catch (error) {
     throw new Error(`Error deleting book: ${error.message}`);
   }
@@ -39,7 +37,7 @@ export const getBookService = async (id) => {
   }
 };
 
-export const getBooksService = async ({ page = 1, limit = 10, search = "" }) => {
+export const getBooksService = async ({ page, limit, search }) => {
   const skip = (page - 1) * limit;
 
   try {
@@ -69,5 +67,34 @@ export const getBooksService = async ({ page = 1, limit = 10, search = "" }) => 
     };
   } catch (error) {
     throw new Error("Error fetching books with pagination and search");
+  }
+};
+
+
+export const getUserAuthBooksService = async ({ userID, page, limit, search }) => {
+  const skip = (page - 1) * limit;
+  const query = { user: userID };
+
+  if (search) {
+    query.$or = [
+      { title: { $regex: search, $options: "i" } },
+      { author: { $regex: search, $options: "i" } },
+    ];
+  }
+
+  try {
+    const books = await Book.find(query, { updatedAt: 0, __v: 0 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalBooks = await Book.countDocuments(query);
+
+    return {
+      books,
+      totalBooks,
+      totalPages: Math.ceil(totalBooks / limit),
+    };
+  } catch (error) {
+    throw new Error("Error fetching user-authored books with pagination and search");
   }
 };

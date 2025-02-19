@@ -1,14 +1,16 @@
 
 import { sendResponse } from "../helpers/common.js";
-import { addBookService, deleteBookService, getBookService, getBooksService, updateBookService } from "../services/books.js";
+import { addBookService, deleteBookService, getBookService, getBooksService, getUserAuthBooksService, updateBookService } from "../services/books.js";
 
 
 export const addBook = async (req, res, next) => {
   try {
 
-    const { title, author, description, genre, publishedYear, user } = req.body;
+    const { title, author, description, genre, publishedYear } = req.body;
+    const { userID } = req.user
+    console.log("userID", userID)
 
-    await addBookService({ title, author, description, genre, publishedYear, user });
+    await addBookService({ title, author, description, genre, publishedYear, user: userID });
 
     return sendResponse(res, "Book added successfully", true, 201);
 
@@ -96,3 +98,30 @@ export const getBooks = async (req, res) => {
     next(error)
   }
 };
+
+
+export const AuthBooks = async (req, res, next) => {
+  try {
+    const { page, limit, search } = req.query;
+    const { userID } = req.user
+
+    const { books, totalBooks, totalPages } = await getUserAuthBooksService({
+      userID,
+      page: parseInt(page) || 1,
+      limit: parseInt(limit) || 10,
+      search: search || "",
+    });
+
+    sendResponse(res, "Books retrieved successfully", true, 200, {
+      books,
+      totalBooks,
+      totalPages,
+      currentPage: parseInt(page),
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+
