@@ -21,9 +21,7 @@ export const updateBookService = async (id, updateData) => {
 
 export const deleteBookService = async (id) => {
   try {
-
     return await Book.findByIdAndDelete(id);
-
   } catch (error) {
     throw new Error(`Error deleting book: ${error.message}`);
   }
@@ -84,12 +82,10 @@ export const getUserAuthBooksService = async ({ userID, page, limit, search }) =
     ];
   }
 
-  console.log(query)
   try {
-    const books = await Book.find(query, { _id: 0, updatedAt: 0, __v: 0 })
+    const books = await Book.find(query, { updatedAt: 0, __v: 0 })
       .skip(skip)
       .limit(limit);
-    console.log(books)
 
     const totalBooks = await Book.countDocuments(query);
 

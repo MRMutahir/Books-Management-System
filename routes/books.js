@@ -10,6 +10,10 @@ const validateId = [
   check('id').isMongoId().withMessage('Invalid ID format')
 ];
 
+router.get("/list", getBooks);
+
+router.get("/auth-books", authenticate, AuthBooks);
+
 router.post(
   "/add",
   authenticate,
@@ -23,7 +27,7 @@ router.post(
 );
 
 router.put(
-  "/books/:id",
+  "/:id",
   authenticate,
   validateId,
   validate,
@@ -32,7 +36,7 @@ router.put(
 
 
 router.delete(
-  "/books/:id",
+  "/:id",
   authenticate,
   validateId,
   validate,
@@ -40,15 +44,12 @@ router.delete(
 );
 
 router.get(
-  "/books/:id",
+  "/:id",
   validateId,
   validate,
   getBookById
 );
 
 
-router.get("/books", getBooks);
-
-router.get("/auth-books", authenticate, AuthBooks);
 
 export { router as booksRoutes };

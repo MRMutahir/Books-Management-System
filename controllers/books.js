@@ -8,6 +8,7 @@ export const addBook = async (req, res, next) => {
 
     const { title, author, description, genre, publishedYear } = req.body;
     const { userID } = req.user
+    console.log("userID", userID)
 
     await addBookService({ title, author, description, genre, publishedYear, user: userID });
 
@@ -103,7 +104,7 @@ export const AuthBooks = async (req, res, next) => {
   try {
     const { page, limit, search } = req.query;
     const { userID } = req.user
-  
+
     const { books, totalBooks, totalPages } = await getUserAuthBooksService({
       userID,
       page: parseInt(page) || 1,
