@@ -22,6 +22,7 @@ routes(app);
 app.listen(PORT, () => {
     connectDB();
     console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`change`);
 });
 
 app.use(errorHandler);
